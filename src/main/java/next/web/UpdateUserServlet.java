@@ -23,14 +23,18 @@ public class UpdateUserServlet extends HttpServlet {
         rd.forward(request, response);
     }
 
-    public void doPost(HttpServletRequest request, HttpServletResponse response) {
+    public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String userId = String.valueOf(request.getAttribute("userId"));
         String password = String.valueOf(request.getAttribute("password"));
         String name = String.valueOf(request.getAttribute("name"));
         String email = String.valueOf(request.getAttribute("email"));
 
         User user = DataBase.findUserById(userId);
+        user.setPassword(password);
+        user.setName(name);
+        user.setEmail(email);
 
-
+        DataBase.addUser(user);
+        response.sendRedirect("/user/list");
     }
 }
